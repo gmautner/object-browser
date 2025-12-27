@@ -1,0 +1,68 @@
+# Rebuild and commit web-app assets after dependency updates
+# This ensures the embedded static files stay in sync with yarn.lock
+
+name: Rebuild Assets
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'web-app/yarn.lock'
+      - 'web-app/package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read .nvmrc
+        id: node_version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NVMRC }}
+          cache: "yarn"
+          cache-dependency-path: web-app/yarn.lock
+
+      - name: Install dependencies
+        working-directory: ./web-app
+        run: yarn install --immutable
+
+      - name: Build assets
+        working-directory: ./web-app
+        run: yarn build
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet web-app/build/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to built assets"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Built assets have changed"
+          fi
+
+      - name: Commit updated assets
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web-app/build/
+          git commit -m "chore: rebuild assets after dependency update"
+          git push
+
