@@ -17,7 +17,7 @@ console:
 
 getdeps:
 	@mkdir -p ${GOPATH}/bin
-	@echo "Installing golangci-lint" && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH)/bin
+	@echo "Installing golangci-lint" && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH)/bin v1.64.8
 
 verifiers: getdeps fmt lint
 
