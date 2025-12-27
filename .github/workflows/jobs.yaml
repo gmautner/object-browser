@@ -262,9 +262,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -314,9 +322,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -366,9 +382,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -418,9 +442,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -466,9 +498,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -514,9 +554,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -562,9 +610,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -613,9 +669,17 @@ jobs:
           docker stop minio || true;
           docker container prune -f || true;
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Install TestCafe
         run: npm install testcafe@3.5.0
@@ -1219,9 +1283,17 @@ jobs:
             ./console
           key: ${{ runner.os }}-binary-istanbul-coverage-${{ github.run_id }}
 
-      - name: Start Console, front-end app and initialize users/policies
+      - name: Start MinIO, Console, and initialize permissions
         run: |
-          (./console server) & (make initialize-permissions)
+          # Start MinIO first, then wait for it to be healthy
+          make test-start-docker-minio
+          sleep 3
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9000/minio/health/live || true
+          # Start console in background after MinIO is ready
+          ./console server &
+          sleep 2
+          # Apply test permissions
+          make test-apply-permissions
 
       - name: Run Playwright tests
         run: |
