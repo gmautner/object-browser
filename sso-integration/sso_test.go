@@ -132,7 +132,7 @@ func TestMain(t *testing.T) {
 	}
 	var jsonMap models.LoginDetails
 
-	fmt.Println(body)
+	fmt.Println(string(body))
 
 	err = json.Unmarshal(body, &jsonMap)
 	if err != nil {

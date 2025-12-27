@@ -219,7 +219,7 @@ func GetTLSConfig() (x509Certs []*x509.Certificate, manager *xcerts.Manager, err
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	if !(isFile(getPublicCertFile()) && isFile(getPrivateKeyFile())) {
+	if !isFile(getPublicCertFile()) || !isFile(getPrivateKeyFile()) {
 		return nil, nil, nil
 	}
 

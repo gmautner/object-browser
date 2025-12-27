@@ -34,7 +34,6 @@ import (
 	"github.com/minio/minio-go/v7/pkg/set"
 	"github.com/minio/pkg/v3/env"
 	"golang.org/x/crypto/pbkdf2"
-	"golang.org/x/oauth2"
 	xoauth2 "golang.org/x/oauth2"
 )
 
@@ -194,7 +193,7 @@ func NewOauth2ProviderClient(scopes []string, r *http.Request, httpClient *http.
 		ClientID:     GetIDPClientID(),
 		ClientSecret: GetIDPSecret(),
 		RedirectURL:  redirectURL,
-		Endpoint: oauth2.Endpoint{
+		Endpoint: xoauth2.Endpoint{
 			AuthURL:  ddoc.AuthEndpoint,
 			TokenURL: ddoc.TokenEndpoint,
 		},
@@ -277,7 +276,7 @@ func (client *Provider) VerifyIdentity(ctx context.Context, code, state, roleARN
 		return nil, err
 	}
 	getWebTokenExpiry := func() (*credentials.WebIdentityToken, error) {
-		customCtx := context.WithValue(ctx, oauth2.HTTPClient, client.client)
+		customCtx := context.WithValue(ctx, xoauth2.HTTPClient, client.client)
 		oauth2Token, err := client.oauth2Config.Exchange(customCtx, code)
 		if err != nil {
 			return nil, err
@@ -350,7 +349,7 @@ func (client *Provider) VerifyIdentityForOperator(ctx context.Context, code, sta
 	if err := validateOauth2State(state, keyFunc); err != nil {
 		return nil, err
 	}
-	customCtx := context.WithValue(ctx, oauth2.HTTPClient, client.client)
+	customCtx := context.WithValue(ctx, xoauth2.HTTPClient, client.client)
 	oauth2Token, err := client.oauth2Config.Exchange(customCtx, code)
 	if err != nil {
 		return nil, err

@@ -287,7 +287,7 @@ func debugLogHeaders(sb *strings.Builder, h http.Header) {
 			} else {
 				first = false
 			}
-			sb.WriteString(fmt.Sprintf("%s: %s\n", key, value))
+			fmt.Fprintf(sb, "%s: %s\n", key, value)
 		}
 	}
 	if first {

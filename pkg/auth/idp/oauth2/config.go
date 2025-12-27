@@ -28,7 +28,6 @@ import (
 	"github.com/minio/minio-go/v7/pkg/set"
 	"github.com/minio/pkg/v3/env"
 	"golang.org/x/crypto/pbkdf2"
-	"golang.org/x/oauth2"
 	xoauth2 "golang.org/x/oauth2"
 )
 
@@ -103,7 +102,7 @@ func (pc ProviderConfig) GetOauth2Provider(name string, scopes []string, r *http
 		ClientID:     pc.ClientID,
 		ClientSecret: pc.ClientSecret,
 		RedirectURL:  redirectURL,
-		Endpoint: oauth2.Endpoint{
+		Endpoint: xoauth2.Endpoint{
 			AuthURL:  ddoc.AuthEndpoint,
 			TokenURL: ddoc.TokenEndpoint,
 		},
